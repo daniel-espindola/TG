@@ -2,7 +2,7 @@
  *
  * Autor: Daniel Espindola da Silva, RA: 11201720556
  *
- * Referências utilizadas:
+ * Referências utilizadas: https://www.geeksforgeeks.org/dynamically-allocate-2d-array-c/
  *
  ***********************************************************/
 
@@ -22,14 +22,14 @@ struct grafo
  *    - devolve um novo grafo vazio (aloca memória necessária)
  */
 grafo_t* cria_grafo(int n, int m) {
-    grafo_t grafo;
-    grafo.n = n;
-    grafo.m = m;
+    grafo_t *grafo = malloc(sizeof(grafo_t));
+    grafo->n = n;
+    grafo->m = m;
 
-    grafo.adj = (int **)malloc(n*(sizeof(int *)));
+    grafo->adj = (int **)calloc(n,(sizeof(int *)));
 
     for(int i=0; i<n; i++)
-      grafo.adj[i] = (int *)malloc(n*sizeof(int));
+      grafo->adj[i] = (int *)calloc(n,sizeof(int));
 
     return grafo;
 }
@@ -39,7 +39,9 @@ grafo_t* cria_grafo(int n, int m) {
  *    - adiciona a aresta uv no grafo 
  */
 void adiciona_aresta(grafo_t *G, int u, int v) {
-    /* IMPLEMENTE-ME */
+   G->m++;
+   G->adj[u][v] = 1;
+   G->adj[v][u] = 1;
 }
 
 /* imprime_grafo:
@@ -48,11 +50,22 @@ void adiciona_aresta(grafo_t *G, int u, int v) {
  *          v: a b c d e
  */
 void imprime_grafo(grafo_t *G) {
-    /* IMPLEMENTE-ME */
+    int n = G->n;
+
+    for(int i=0; i<n; i++) {
+        printf("%d:",i);
+        for(int j=n;j>-1; j--){
+            if(G->adj[i][j] == 1)
+                printf(" %d",j);
+        }
+        printf("\n");
+    }
 }
 
 void remove_aresta(grafo_t *G, int u, int v) {
-    /* IMPLEMENTE-ME */
+    G->m--;
+    G->adj[u][v] = 0;
+    G->adj[v][u] = 0;
 }
 
 /* deleta_grafo:
@@ -60,7 +73,12 @@ void remove_aresta(grafo_t *G, int u, int v) {
  *    - desaloca memória utilizada por G 
  */
 void deleta_grafo(grafo_t *G) {
-    /* IMPLEMENTE-ME */
+    int n = G->n;
+
+    for(int i=0; i<n; i++)
+        free(G->adj[i]);
+    free(G->adj);
+    free(G);
 }
 
 /* grau:
@@ -68,8 +86,12 @@ void deleta_grafo(grafo_t *G) {
  *    - retorna o grau de v
  */
 int grau(grafo_t *G, int v) {
-    /* IMPLEMENTE-ME */
-    return 0;
+    int vg =0;
+
+    for(int i=0; i<G->n;i++)
+        vg+=G->adj[v][i];
+
+    return vg;
 }
 
 /* grau_maximo:
@@ -77,8 +99,11 @@ int grau(grafo_t *G, int v) {
  *    - retorna o grau máximo de G
  */
 int grau_maximo(grafo_t *G) {
-    /* IMPLEMENTE-ME */
-    return 0;
+    int vgMax = 0;
+
+    for(int i=0; i<G->n; i++)
+        vgMax = vgMax > grau(G,i) ? vgMax : grau(G,i);
+    return vgMax;
 }
 
 /* DFS:
