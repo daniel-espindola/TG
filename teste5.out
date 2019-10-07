@@ -1,0 +1,55 @@
+O seguinte grafo foi recebido:
+0: 1 4
+1: 0 2 4 5
+2: 1 6 7 8
+3: 7
+4: 0 1 5
+5: 1 4 9
+6: 2 8
+7: 2 3
+8: 2 6 10
+9: 5 11 12 14
+10: 8 15 18
+11: 9 12 14
+12: 9 11 13
+13: 12
+14: 9 11
+15: 10 16 17
+16: 15
+17: 15 18 20
+18: 10 17 19
+19: 18 20
+20: 17 19
+
+Ele tem grau maximo 4.
+
+Aplicando a DFS a partir de 8:
+0 foi visitado;
+1 foi visitado;
+2 foi visitado;
+3 foi visitado;
+4 foi visitado;
+5 foi visitado;
+6 foi visitado;
+7 foi visitado;
+8 foi visitado;
+9 foi visitado;
+10 foi visitado;
+11 foi visitado;
+12 foi visitado;
+13 foi visitado;
+14 foi visitado;
+15 foi visitado;
+16 foi visitado;
+17 foi visitado;
+18 foi visitado;
+19 foi visitado;
+20 foi visitado;
+
+A aresta (5,9) eh de corte.
+A aresta (10,15) nao eh de corte.
+A aresta (8,10) eh de corte.
+A aresta (2,6) nao eh de corte.
+A aresta (1,2) eh de corte.
+A aresta (7,3) eh de corte.
+A aresta (17,20) nao eh de corte.

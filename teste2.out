@@ -1,0 +1,28 @@
+O seguinte grafo foi recebido:
+0: 1 4 8
+1: 0 2 3
+2: 1 5 9
+3: 1 6 7
+4: 0 5 7
+5: 2 4 6
+6: 3 5 8
+7: 3 4 9
+8: 0 6 9
+9: 2 7 8
+
+Ele tem grau maximo 3.
+
+Aplicando a DFS a partir de 9:
+0 foi visitado;
+1 foi visitado;
+2 foi visitado;
+3 foi visitado;
+4 foi visitado;
+5 foi visitado;
+6 foi visitado;
+7 foi visitado;
+8 foi visitado;
+9 foi visitado;
+
+A aresta (6,3) nao eh de corte.
+A aresta (2,5) nao eh de corte.
