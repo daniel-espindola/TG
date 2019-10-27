@@ -190,8 +190,7 @@ int* Fleury(grafo_t *G, int v) {
     }
     
     trilha[k] = v;
-    exit(404);
-    //return trilha;
+    return trilha;
 }
 
 int eh_aresta(grafo_t *G, int v, int u){
@@ -201,14 +200,19 @@ int eh_aresta(grafo_t *G, int v, int u){
 }
 
 int FleuryAux(grafo_t *G, int v, int *trilha, int k){
+    int ar = 0;
+
     for(int i=0; i < G->n;i++){
-        printf("\n(%d,%d) = %d, %d |",v,i,eh_aresta(G,v,i),!eh_aresta_corte(G,v,i));
-        if(eh_aresta(G,v,i) && !eh_aresta_corte(G,v,i)) {
-            printf("**%d**\n",k);
-            trilha[k] = i;
-            remove_aresta(G, v, i);
-            return i;
+        if(eh_aresta(G,v,i)) {
+            ar = i;
+            if(!eh_aresta_corte(G,v,i)) {
+                break;
+            }
+            
         }
     }
-    return 0;
+
+    trilha[k] = ar;
+    remove_aresta(G, v, ar);
+    return ar;
 }
