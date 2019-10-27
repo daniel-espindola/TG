@@ -16,7 +16,7 @@ struct grafo
     int m; // numero de arestas
     int ** adj; // matriz de adjancecia 
 };
-
+int FleuryAux(grafo_t *G, int v, int *trilha, int k);
 int* DFSRec(grafo_t *G, int s, int* visitados);
 
 /* cria_grafo:
@@ -70,8 +70,8 @@ void imprime_grafo(grafo_t *G) {
 
 void remove_aresta(grafo_t *G, int u, int v) {
     G->m--;
-    G->adj[u][v] = 0;
-    G->adj[v][u] = 0;
+    G->adj[u][v]--;
+    G->adj[v][u]--;
 }
 
 /* deleta_grafo:
@@ -151,9 +151,64 @@ int eh_aresta_corte(grafo_t *G, int u, int v) {
     G->adj[u][v]++;
     G->adj[v][u]++;
     for(int i=0; i<G->n; i++) {
-        if(visitados1[i] != visitados2[i])
+        if(visitados1[i] != visitados2[i]){
+            free(visitados1);
+            free(visitados2);
             return 1;
+        }
     }
 
+    free(visitados1);
+    free(visitados2);
+    return 0;
+}
+
+int eh_par(grafo_t *G) {
+    for(int i=0; i<G->n; i++){
+        if((grau(G,i) % 2) != 0)
+            return 0;
+    }
+    return 1;
+}
+
+/* Fleury:
+ *    - recebe um grafo G *PAR* e um vertice v
+ *    - retorna um vetor que contem a sequencia de vertices de uma trilha euleriana em G
+ *      - em particular, esse vetor contem v na primeira e ultima posicoes
+ *    - IMPORTANTE: quando houver dois ou mais vertices possiveis de serem escolhidos, comece pelo de menor indice
+ */
+int* Fleury(grafo_t *G, int v) {
+    int* trilha = calloc(sizeof(int),(G->n)+1);
+    int k = 1;
+    trilha[0] = v;
+    int aux = v;
+    int m = G->m;
+
+    for(int i=0;i<m;i++){
+        aux = FleuryAux(G,aux,trilha,k);
+        k++;
+    }
+    
+    trilha[k] = v;
+    exit(404);
+    //return trilha;
+}
+
+int eh_aresta(grafo_t *G, int v, int u){
+    if(G->adj[u][v] >0)
+       return 1;
+    return 0;
+}
+
+int FleuryAux(grafo_t *G, int v, int *trilha, int k){
+    for(int i=0; i < G->n;i++){
+        printf("\n(%d,%d) = %d, %d |",v,i,eh_aresta(G,v,i),!eh_aresta_corte(G,v,i));
+        if(eh_aresta(G,v,i) && !eh_aresta_corte(G,v,i)) {
+            printf("**%d**\n",k);
+            trilha[k] = i;
+            remove_aresta(G, v, i);
+            return i;
+        }
+    }
     return 0;
 }
