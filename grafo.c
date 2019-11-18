@@ -8,7 +8,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "grafo.h"
+#include "heap.c"
 
 struct grafo
 { 
@@ -215,4 +217,26 @@ int FleuryAux(grafo_t *G, int v, int *trilha, int k){
     trilha[k] = ar;
     remove_aresta(G, v, ar);
     return ar;
+}
+
+/* Dijkstra:
+ *    - recebe um grafo G conexo, um vertice inicio e uma matriz que contem os pesos das arestas
+ *    - retorna um vetor que contem a distancia entre inicio e todos os outros vertices
+ */
+int* Dijkstra(grafo_t *G, int inicio, int** peso){
+    int * dist = malloc(sizeof(int)*(G->n));
+    int origem;
+    heap_t *heap = cria_heap(G->n);
+    adiciona_na_heap(heap, inicio, 0);
+    dist[inicio] = 0;
+
+    for(int i = 0; i<G->n; i++) {
+        origem = remove_da_heap(heap);
+        if(G->adj[origem][i] != 0) {
+            dist[i] = peso[origem][i] + dist[origem];
+            adiciona_na_heap(heap,i,dist[i]);
+        }
+    }
+
+    return dist;
 }

@@ -88,6 +88,12 @@ int eh_par(grafo_t *G);
  *    - IMPORTANTE: quando houver dois ou mais vertices possiveis de serem escolhidos, comece pelo de menor indice
  */
 int* Fleury(grafo_t *G, int v);
+
+/* Dijkstra:
+ *    - recebe um grafo G conexo, um vertice inicio e uma matriz que contem os pesos das arestas
+ *    - retorna um vetor que contem a distancia entre inicio e todos os outros vertices
+ */
+int* Dijkstra(grafo_t *G, int inicio, int** peso);
  
 #endif /* __GRAFO_H */
 
