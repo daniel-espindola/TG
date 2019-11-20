@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
     for (v = 0; v < n; v++) {
         printf("distancia de %d a %d = %d\n", u, v, distancia[v]);
     }
-
     deleta_grafo(G);
     for (i = 0; i < n; i++)
         free(pesos[i]);

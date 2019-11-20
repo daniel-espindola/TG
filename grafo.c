@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "grafo.h"
-#include "heap.c"
+#include "heap.h"
 
 struct grafo
 { 
@@ -226,17 +226,31 @@ int FleuryAux(grafo_t *G, int v, int *trilha, int k){
 int* Dijkstra(grafo_t *G, int inicio, int** peso){
     int * dist = malloc(sizeof(int)*(G->n));
     int origem;
+    int visitados[G->n];
     heap_t *heap = cria_heap(G->n);
-    adiciona_na_heap(heap, inicio, 0);
-    dist[inicio] = 0;
+    visitados[inicio] = 1;
+    int k =1;
+    int vizinhos = 0;
 
-    for(int i = 0; i<G->n; i++) {
-        origem = remove_da_heap(heap);
-        if(G->adj[origem][i] != 0) {
-            dist[i] = peso[origem][i] + dist[origem];
-            adiciona_na_heap(heap,i,dist[i]);
-        }
+    for(int i=0;i<G->n;i++) {
+        if(i==inicio) continue;
+        dist[i] = 2147483647;
     }
 
+    dist[inicio] = 0;
+    adiciona_na_heap(heap, inicio, 0);
+    
+
+    while(!heap_vazia(heap)) {
+        origem = remove_da_heap(heap);
+        visitados[origem] = 1;
+
+        for(int j=0;j<G->n;j++){
+            if(G->adj[origem][j] != 0 && visitados[j] != 1 && (peso[origem][j] + dist[origem] < dist[j])) {
+                dist[j] = peso[origem][j] + dist[origem];
+                adiciona_na_heap(heap,j,dist[j]);
+            }
+        }
+    }
     return dist;
 }
